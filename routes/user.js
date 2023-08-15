@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const db = require('../models/db')
 
 const data = {
     title: "Popüler Kurslar31",
@@ -30,11 +31,37 @@ router.use("/blogs/:blogid", function (req, res) {
 });
 
 router.use("/blogs", function (req, res) {
-    res.render("users/blogs", data);
-});
+    db.execute("SELECT * FROM blog")
+        .then(result => {
+            db.execute("SELECT * FROM category")
+                .then(queryResult => {
+                   // const sonuc = queryResult[0] Burada sonuc değişkeni atayarak bütün bilgileri alıyoruz
+                    //console.log(sonuc[1].name) Burada da atanan değer içerisindeki alanları seçebiliyoruz. Mesela title, desc, id 
+                    res.render("users/index", {
+                        title: "Popüler Kurs",
+                        blogs: result[0],
+                        categories: queryResult[0]
+                    })
+                })
+                .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+})
+
 
 router.use("/", function (req, res) {
-    res.render("users/index", data); //Burada data üzerinden title bilgisine ulaşılabilir. ejs ile <%=title%>
-});
-
+    db.execute("SELECT * FROM blog")
+        .then(result => {
+            db.execute("SELECT * FROM category")
+                .then(queryResult => {
+                    res.render("users/index", {
+                        title: "Popüler K",
+                        blogs: result[0],
+                        categories: queryResult[0]
+                    })
+                })
+                .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+})
 module.exports = router;
