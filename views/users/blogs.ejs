@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,11 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/libs/bootstrap/dist/css/bootstrap.min.css">
-    <title><%= title %> - Blogapp</title>
+    <title><%= baslik %> - Blogapp</title>
 </head>
 
 <body>
-
     <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
         <div class="container">
             <a href="/" class="navbar-brand">Blogapp</a>
@@ -26,42 +24,41 @@
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-3">
-
-
                 <div class="list-group">
                     <a href="" class="list-group-item list-group-item-action"> Tüm Kategoriler</a>
                     <% categories.forEach(function(category) { %>
                     <!--forEach bir dizi veya liste üzerinde her bir öğeyi işlemek için kullanılan bir döngüdür.!-->
                     <a href="" class="list-group-item list-group-item-action"> <%= category.name %> </a>
                     <% }) %>
-
                 </div>
             </div>
             <div class="col-md-9">
                 <h1 class="h3 mb-3">
-                    <%= title %>
+                    <%= baslik %>
                 </h1>
 
-                <% blogs.forEach(allBlog => { %>
-                <div class="card mb-3">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <img src="/static/images/<%= allBlog.image %>" class="img-fluid" alt="">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <%= allBlog.title %>
-                                </h5>
-                                <p class="card-text">
-                                    <%= allBlog.description %>
-                                </p>
+                <% blogs.forEach(allBlog => { %> <!--Burayı partials dosyasına alırsan alttaki ejs ler değişir. tüm allBlog silinmelidir. <= image %> şeklinde olmalı-->
+                    <div class="card mb-3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="/static/images/<%= allBlog.image %>" class="img-fluid" alt="">
+                                <!--Dinamik (db den gelen image)-->
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a style="text-decoration: none;"  href="/blogs/<%= allBlog.blogid %>"> <%= allBlog.title %> </a>
+                                        <!--Dinamik (db den gelen title)-->
+                                    </h5>
+                                    <p class="card-text">
+                                        <%= allBlog.description %>
+                                        <!--Dinamik (db den gelen desc)-->
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <% }) %>
-
+                    <% }) %>
 
                 <% if (blogs.length > 3) { %>
                 <!--Pagination-->
@@ -85,7 +82,6 @@
                     </ul>
                 </nav>
                 <% } %>
-
 
             </div>
         </div>
