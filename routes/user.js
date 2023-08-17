@@ -7,11 +7,16 @@ router.use("/blogs/:blogid", async (req, res) => { // /blogs/? soru işareti yer
     const id = req.params.blogid
     //console.log("id = " + id) // Burada url e yazılan id bilgisi konsola yazıldı. buraya girilen id deki veriler alınır. bütün kayıtlar alınmaz
     try {
-        const [blog, ] = await db.execute("SELECT * FROM blog WHERE blogid=?", [id]) // Soru işareti ile koyduktan sonra execute() 'a ikinci bir parametreyi Dizi olarak ekliyoruz. iki parametre varsa iki değer atanır
-        res.render("users/blog-details", {
-            title: blog[0].title,
-            blog: blog[0]
-        })
+        const [blogs, ] = await db.execute("SELECT * FROM blog WHERE blogid=?", [id]) // Soru işareti ile koyduktan sonra execute() 'a ikinci bir parametreyi Dizi olarak ekliyoruz. iki parametre varsa iki değer atanır
+
+        const blog = blogs[0];
+        if (blog) {
+            return res.render("users/blog-details", { // ilgili id si olan obje database de varsa  return dönüp aşağıdaki işlemleri yapar yok ise anasayfaya redirect eder
+                title: blog.title,
+                blog: blog
+            })
+        }
+        res.redirect('/');
 
     } catch (error) {
         console.log(error)
