@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <%- include("../partials/_header")  %>
 </head>
+
 <body>
-    admin blog list
+
+    <%- include("../partials/_nav")  %>
+
+    <div class="container mt-3">
+        <div class="col-md-12 mt-3">
+            <table class="table table-bordered table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">ID</th>
+                        <th style="width: 150px;">Image</th>
+                        <th>Title</th>
+                        <th style="width: 150px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% blogs.forEach(blog => { %>
+                    <tr>
+                        <td><%= blog.blogid %></td>
+                        <td>
+                            <img src="/static/images/<%= blog.image %>" class="img-fluid" alt="">
+                        </td>
+                        <td><%= blog.title %></td>
+                        <td>
+                            <a href="/admin/blogs/<%= blog.blogid %>" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="/admin/blogs/<%= blog.blogid %>" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </body>
+
 </html>
