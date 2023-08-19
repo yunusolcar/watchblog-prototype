@@ -2,6 +2,25 @@ const express = require("express");
 const db = require('../models/db')
 const router = express.Router();
 
+
+router.use("/blogs/category/:categoryid", async (req, res) => {
+    const cat_id = req.params.categoryid
+    try {
+        const [blogs, ] = await db.execute("SELECT * FROM blog WHERE categoryid=?", [cat_id])
+        const [categories, ] = await db.execute("SELECT * FROM category")
+
+        res.render("users/blogs", {
+            title: "Tüm Saatler", //statik veri
+            blogs: blogs, //dinamik veri
+            categories: categories
+        })
+
+    } catch (error) {
+
+    }
+})
+
+
 //Blogs/:id
 router.use("/blogs/:blogid", async (req, res) => { // /blogs/? soru işareti yerine sayı geldiğinde (yani blogid (blogid yerine başka şey de yazabiliriz)) bunu alttaki params içerisinden alabiliriz
     const id = req.params.blogid
@@ -12,7 +31,7 @@ router.use("/blogs/:blogid", async (req, res) => { // /blogs/? soru işareti yer
         const blog = blogs[0];
         if (blog) {
             return res.render("users/blog-details", { // ilgili id si olan obje database de varsa  return dönüp aşağıdaki işlemleri yapar yok ise anasayfaya redirect eder
-                title: blog.title,
+                title: blog.title, //diinamik veri
                 blog: blog
             })
         }
@@ -30,7 +49,7 @@ router.use("/blogs", async (req, res) => {
         const [categories, ] = await db.execute("SELECT * FROM category") // [category, ] = category değişkenine, dizinin ilk elemanı atanır.
         // console.log(blogs[2].title) 2. indisteki kaydın title bilgisini konsola yazdırır
         res.render("users/index", {
-            title: "Tüm Kurslar",
+            title: "Tüm Saatler",
             blogs: blogs,
             categories: categories
         })
@@ -46,7 +65,7 @@ router.use("/", async (req, res) => {
         const [categories, ] = await db.execute("SELECT * FROM category") // [category, ] = category değişkenine, dizinin ilk elemanı atanır.
         // console.log(blogs[2].title) 2. indisteki kaydın title bilgisini konsola yazdırır
         res.render("users/index", {
-            title: "Popüler Kurslar",
+            title: "Popüler Saatler", //statik veri
             blogs: blogs,
             categories: categories
         })

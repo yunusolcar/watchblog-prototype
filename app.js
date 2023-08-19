@@ -9,6 +9,9 @@ const app = express();
 app.set("view engine", "ejs");
 
 //Middlewares
+app.use(express.urlencoded({
+    extended: false
+}))
 //app.use(express.static("public"));
 
 app.use("/libs", express.static(path.join(__dirname, "node_modules")));
