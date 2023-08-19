@@ -29,8 +29,26 @@ router.post("/blog/create", async (req, res) => {
     }
 })
 
-router.get("/blogs/:blogid", function (req, res) {
-    res.render("admin/blog-edit");
+router.get("/blogs/:blogid", async (req, res) => {
+    const blogid = req.params.blogid //"/blogs/:blogid buradan blogid gelir
+
+    try {
+        const [blogs, ] = await db.execute("SELECT * FROM blog WHERE blogid=?", [blogid])
+        const [categories, ] = await db.execute("SELECT * FROM category")
+        const blog = blogs[0]
+
+        if (blog) {
+            return res.render("admin/blog-edit", {
+                title: blog.title,
+                blog: blog,
+                categories: categories
+            });
+        }
+        res.redirect("/admin/blog")
+    } catch (err) {
+        console.log(err)
+    }
+
 })
 
 router.get("/blogs", async (req, res) => {
