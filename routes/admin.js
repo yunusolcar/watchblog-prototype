@@ -1,5 +1,5 @@
 const express = require("express")
-const multer = require("multer")
+const imageUpload = require("../helpers/image-upload")
 const db = require('../models/db')
 const router = express.Router()
 
@@ -76,12 +76,7 @@ router.get("/blog/create", async (req, res) => {
     }
 })
 //Create Blog - post
-
-const upload = multer({
-    dest: "./public/uploads"
-})
-
-router.post("/blog/create", upload.single("image"), async (req, res) => {
+router.post("/blog/create", imageUpload.upload.single("image"), async (req, res) => {
     const title = req.body.title // req.body.title => blog-create deki name alanından geliyor.
     const description = req.body.description
     const image = req.file.filename
