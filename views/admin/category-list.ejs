@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <%- include("../partials/_header")  %>
+</head>
+
+<body>
+
+     <%- include("../partials/_nav")  %>
+
+     <div class="container mt-3">
+          <div class="row">
+               <div class="col-md-12 mt-3">
+                    <% if (action != "undefined" && action =="edit") { %>
+                    <!--Action varsa (yani undefined değilse ve edit ise aşağıdaki kodu çalıştırır)-->
+                    <div class="alert alert-success">The category with ID <%= categoryid %> has been updated</div>
+                    <% } %>
+                    <% if (action != "undefined" && action =="create") { %>
+                    <div class="alert alert-success">Category Created</div>
+                    <% } %>
+                    <% if (action != "undefined" && action =="delete") { %>
+                    <div class="alert alert-success">Category Deleted</div>
+                    <% } %>
+                    <table class="table table-bordered table table-striped">
+                         <thead>
+                              <tr>
+                                   <th style="width: 50px;">ID</th>
+                                   <th> Category Name</th>
+                                   <th style="width: 150px;"></th>
+                              </tr>
+                         </thead>
+                         <tbody>
+                              <% categories.forEach(category => { %>
+                              <tr>
+                                   <td><%= category.categoryid %></td>
+                                   <td>
+                                        <%= category.name %>
+                                   </td>
+                                   <td>
+                                        <a href="/admin/categories/<%= category.categoryid %>"
+                                             class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="/admin/category/delete/<%= category.categoryid %>"
+                                             class="btn btn-sm btn-danger">Delete</a>
+                                   </td>
+                              </tr>
+                              <% }) %>
+                         </tbody>
+                    </table>
+               </div>
+          </div>
+     </div>
+</body>
+
+</html>

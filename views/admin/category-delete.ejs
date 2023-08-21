@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <%- include("../partials/_header")  %>
+</head>
+
+<body>
+
+     <%- include("../partials/_nav")  %>
+
+     <div class="container mt-3">
+          <div class="row">
+               <div class="col-md-12 mt-3 text-center">
+                    <div class="alert alert-secondary">
+                         <p class="mb-3">
+                              <b><%= category.name %> </b> <br> Do you want to delete?
+                         </p>
+                         <form method="POST">
+                              <input type="hidden" name="categoryid" value="<%= category.categoryid %>">
+                              <button class="btn btn-danger" type="submit">Yes</button>
+                              <a href="/admin/categories" class="btn btn-primary">No</a>
+                         </form>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+</body>
+
+</html>

@@ -10,35 +10,46 @@
     <%- include("../partials/_nav")  %>
 
     <div class="container mt-3">
-        <div class="col-md-12 mt-3">
-            <table class="table table-bordered table table-striped">
-                <thead>
-                    <tr>
-                        <th style="width: 50px;">ID</th>
-                        <th style="width: 150px;">Image</th>
-                        <th>Title</th>
-                        <th style="width: 150px;"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% blogs.forEach(blog => { %>
-                    <tr>
-                        <td><%= blog.blogid %></td>
-                        <td>
-                            <img src="/static/images/<%= blog.image %>" class="img-fluid" alt="">
-                        </td>
-                        <td><%= blog.title %></td>
-                        <td>
-                            <a href="/admin/blogs/<%= blog.blogid %>" class="btn btn-sm btn-primary">Edit</a>
-                            <a href="/admin/blog/delete/<%= blog.blogid %>" class="btn btn-sm btn-danger">Delete</a>
-                        </td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+        <div class="row">
+            <div class="col-md-12 mt-3">
+                <% if (action != "undefined" && action =="edit") { %>
+                <!--Action varsa (yani undefined değilse ve edit ise aşağıdaki kodu çalıştırır)-->
+                <div class="alert alert-success">The blog with ID <%= blogid %> has been updated</div>
+                <% } %>
+                <% if (action != "undefined" && action =="create") { %>
+                <div class="alert alert-success">Blog Created</div>
+                <% } %>
+                <% if (action != "undefined" && action =="delete") { %>
+                <div class="alert alert-success">Blog Deleted</div>
+                <% } %>
+                <table class="table table-bordered table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">ID</th>
+                            <th style="width: 150px;">Image</th>
+                            <th>Title</th>
+                            <th style="width: 150px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% blogs.forEach(blog => { %>
+                        <tr>
+                            <td><%= blog.blogid %></td>
+                            <td>
+                                <img src="/static/images/<%= blog.image %>" class="img-fluid" alt="">
+                            </td>
+                            <td><%= blog.title %></td>
+                            <td>
+                                <a href="/admin/blogs/<%= blog.blogid %>" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="/admin/blog/delete/<%= blog.blogid %>" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
 </body>
 
 </html>
