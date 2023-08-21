@@ -1,4 +1,5 @@
 const express = require("express")
+const multer = require("multer")
 const db = require('../models/db')
 const router = express.Router()
 
@@ -75,14 +76,20 @@ router.get("/blog/create", async (req, res) => {
     }
 })
 //Create Blog - post
-router.post("/blog/create", async (req, res) => {
+
+const upload = multer({
+    dest: "./public/uploads"
+})
+
+router.post("/blog/create", upload.single("image"), async (req, res) => {
     const title = req.body.title // req.body.title => blog-create deki name alanından geliyor.
     const description = req.body.description
-    const image = req.body.image
+    const image = req.file.filename
     const category = req.body.category
     //  console.log(title, description, image, category) //formun içerisine gelen bilgiler body ye gelir.
 
     try {
+        console.log(image);
         await db.execute("INSERT INTO blog(title, description, image, categoryid) VALUES (?,?,?,?)", [title, description, image, category])
         res.redirect("/admin/blogs?action=create")
     } catch (err) {
