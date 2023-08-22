@@ -1,4 +1,5 @@
 const express = require("express")
+const fs = require("fs")
 const imageUpload = require("../helpers/image-upload")
 const db = require('../models/db')
 const router = express.Router()
@@ -142,12 +143,18 @@ router.post("/blogs/:blogid", imageUpload.upload.single("image"), async (req, re
     const title = req.body.title
     const description = req.body.description
     let image = req.body.image
-    const categoryid = req.body.category
 
     if (req.file) {
         image = req.file.filename
+
+        fs.unlink("./public/uploads/" + req.body.image, err => {
+            console.log(err);
+        })
+    } else {
+        console.log("success");
     }
 
+    const categoryid = req.body.category
     try {
         await db.execute("UPDATE blog SET title=?, description=?, image=?, categoryid=? WHERE blogid=?", [title, description, image, categoryid, blogid]) // [title, description, image, categoryid, blogid] burada body den almış olduğu blogid yi alıp ona göre hangi id yi update edeceğimizi belirtiyoruz
         res.redirect("/admin/blogs?action=edit&blogid=" + blogid)
@@ -155,7 +162,6 @@ router.post("/blogs/:blogid", imageUpload.upload.single("image"), async (req, re
     } catch (err) {
         console.log(err)
     }
-
 })
 //Edit Category - get
 router.get("/categories/:categoryid", async (req, res) => {
