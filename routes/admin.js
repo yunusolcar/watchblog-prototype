@@ -136,13 +136,17 @@ router.get("/blogs/:blogid", async (req, res) => {
     }
 })
 //Edit Blog - post
-router.post("/blogs/:blogid", async (req, res) => {
+router.post("/blogs/:blogid", imageUpload.upload.single("image"), async (req, res) => {
 
     const blogid = req.body.blogid
     const title = req.body.title
     const description = req.body.description
-    const image = req.body.image
+    let image = req.body.image
     const categoryid = req.body.category
+
+    if (req.file) {
+        image = req.file.filename
+    }
 
     try {
         await db.execute("UPDATE blog SET title=?, description=?, image=?, categoryid=? WHERE blogid=?", [title, description, image, categoryid, blogid]) // [title, description, image, categoryid, blogid] burada body den almış olduğu blogid yi alıp ona göre hangi id yi update edeceğimizi belirtiyoruz
