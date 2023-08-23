@@ -40,10 +40,10 @@
                         <label for="category" class="col-sm-2 col-form-label">Category</label>
                         <div class="col-sm-8">
                             <select name="category" id="category" class="form-select">
-                                <option value="1" selected>WEB g</option>
-                                <!-- % categories.forEach(category => { %>
-                                <option value="%= category.categoryid %>">%= category.name %></option>
-                                % }) %> -->
+                                <option value="-1" selected>Choose</option>
+                                <% categories.forEach(category => { %>
+                                <option value="<%= category.categoryid%>"><%= category.name%></option>
+                                <% }) %>
                             </select>
                         </div>
                     </div>

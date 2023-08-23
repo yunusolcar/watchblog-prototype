@@ -69,9 +69,10 @@ router.get("/blog/create", async (req, res) => {
 
     try {
         // const [categories, ] = await db.execute("SELECT * FROM category")
+        const categories = await Category.findAll()
         res.render("admin/blog-create", {
             title: "Add Blog",
-            //    categories: categories
+            categories: categories
         })
 
     } catch (err) {
@@ -207,7 +208,10 @@ router.post("/categories/:categoryid", async (req, res) => {
 // Blog List - get
 router.get("/blogs", async (req, res) => {
     try {
-        const [blogs, ] = await db.execute("SELECT blogid, title, image FROM blog")
+        // const [blogs, ] = await db.execute("SELECT blogid, title, image FROM blog")
+        const blogs = await Blog.findAll({
+            attributes: ["blogid", "title", "description", "image"]
+        })
         res.render("admin/blog-list", {
             title: "Blog List",
             blogs: blogs,
@@ -221,7 +225,8 @@ router.get("/blogs", async (req, res) => {
 // Blog List - post
 router.get("/categories", async (req, res) => {
     try {
-        const [categories, ] = await db.execute("SELECT * FROM category")
+        const categories = await Category.findAll()
+
         res.render("admin/category-list", {
             title: "Category List",
             categories: categories,
