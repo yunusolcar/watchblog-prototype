@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+const Blog = require("./models/blog")
+const Category = require("./models/category")
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
 

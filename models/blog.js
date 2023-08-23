@@ -29,11 +29,14 @@ const Blog = sequelize.define("blog", {
      categoryid: {
           type: DataTypes.INTEGER,
           allowNull: false
-     },
-     dateCreated: {
-          type: DataTypes.DATETIME,
-          defaultValue: DataTypes.NOW
      }
 })
+async function syncCon() {
+     await Blog.sync({
+          force: true
+     }) //eğer ilgili tablo zaten varsa, tabloyu yeniden oluşturur ve mevcut verileri siler.
+     console.log("blog table created");
+}
+syncCon()
 
 exports.module = Blog
