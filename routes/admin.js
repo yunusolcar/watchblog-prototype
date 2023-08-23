@@ -129,14 +129,13 @@ router.get("/blogs/:blogid", async (req, res) => {
     const blogid = req.params.blogid //"router.get("/blogs/:blogid") buradan blogid gelir
 
     try {
-        const [blogs, ] = await db.execute("SELECT * FROM blog WHERE blogid=?", [blogid])
-        const [categories, ] = await db.execute("SELECT * FROM category")
-        const blog = blogs[0]
+        const blog = await Blog.findByPk(blogid)
+        const categories = await Category.findAll()
 
         if (blog) {
             return res.render("admin/blog-edit", { //return edilerek aşağıdaki kodların çalışması engellenir
-                title: blog.title,
-                blog: blog,
+                title: blog.dataValues.title,
+                blog: blog.dataValues,
                 categories: categories
             });
         }
@@ -177,13 +176,13 @@ router.get("/categories/:categoryid", async (req, res) => {
     const categoryid = req.params.categoryid //"router.get("/categories/:categoryid") buradan categoryid gelir
 
     try {
-        const [categories, ] = await db.execute("SELECT * FROM category WHERE categoryid=?", [categoryid])
-        const category = categories[0]
+        //const [categories, ] = await db.execute("SELECT * FROM category WHERE categoryid=?", [categoryid])
+        const category = await Category.findByPk(categoryid) //Burada Primary Key'e göre arama yapmaktayız çünkü id'ye göre işlem yapmaktayız. Bir dizi değil sadece bir obje gelir. findOne ile de yapılabilir. bu şekilde yapılırsa where eklemek gerekir
 
         if (category) {
             return res.render("admin/category-edit", { //return edilerek aşağıdaki kodların çalışması engellenir
-                title: category.name,
-                category: category,
+                title: category.dataValues.name,
+                category: category.dataValues,
             });
         }
         res.redirect("/admin/categories")
