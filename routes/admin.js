@@ -1,5 +1,7 @@
 const express = require("express")
 const fs = require("fs")
+const Blog = require("../models/blog")
+const Category = require("../models/category")
 const imageUpload = require("../helpers/image-upload")
 const db = require('../models/db')
 const router = express.Router()
@@ -66,10 +68,10 @@ router.post("/category/delete/:categoryid", async (req, res) => {
 router.get("/blog/create", async (req, res) => {
 
     try {
-        const [categories, ] = await db.execute("SELECT * FROM category")
+        // const [categories, ] = await db.execute("SELECT * FROM category")
         res.render("admin/blog-create", {
             title: "Add Blog",
-            categories: categories
+            //    categories: categories
         })
 
     } catch (err) {
@@ -85,8 +87,12 @@ router.post("/blog/create", imageUpload.upload.single("image"), async (req, res)
     //  console.log(title, description, image, category) //formun içerisine gelen bilgiler body ye gelir.
 
     try {
-        console.log(image);
-        await db.execute("INSERT INTO blog(title, description, image, categoryid) VALUES (?,?,?,?)", [title, description, image, category])
+        await Blog.create({
+            title: title,
+            description: description,
+            image: image,
+            categoryid: category
+        })
         res.redirect("/admin/blogs?action=create")
     } catch (err) {
         console.log(err)
@@ -109,7 +115,9 @@ router.post("/category/create", async (req, res) => {
     const name = req.body.name
 
     try {
-        await db.execute("INSERT INTO category(name) VALUES (?)", [name])
+        await Category.create({
+            name: name
+        })
         res.redirect("/admin/categories?action=create")
     } catch (err) {
         console.log(err)
