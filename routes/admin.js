@@ -151,7 +151,7 @@ router.post("/blogs/:blogid", imageUpload.upload.single("image"), async (req, re
     const title = req.body.title
     const description = req.body.description
     let image = req.body.image
-
+    const categoryid = req.body.category
     if (req.file) {
         image = req.file.filename
 
@@ -162,10 +162,18 @@ router.post("/blogs/:blogid", imageUpload.upload.single("image"), async (req, re
         console.log("success");
     }
 
-    const categoryid = req.body.category
     try {
-        await db.execute("UPDATE blog SET title=?, description=?, image=?, categoryid=? WHERE blogid=?", [title, description, image, categoryid, blogid]) // [title, description, image, categoryid, blogid] burada body den almış olduğu blogid yi alıp ona göre hangi id yi update edeceğimizi belirtiyoruz
-        res.redirect("/admin/blogs?action=edit&blogid=" + blogid)
+        const blog = await Blog.findByPk(blogid)
+        if (blog) {
+            blog.title = title
+            blog.description = description
+            blog.image = image
+            blog.categoryid = categoryid
+
+            await blog.save() //Verilen güncellenip kaydedilir
+            res.redirect("/admin/blogs?action=edit&blogid=" + blogid)
+        }
+        res.redirect("/admin/blogs") // else bloğu
 
     } catch (err) {
         console.log(err)
@@ -197,13 +205,20 @@ router.post("/categories/:categoryid", async (req, res) => {
     const name = req.body.name
 
     try {
-        await db.execute("UPDATE category SET name=? WHERE categoryid=?", [name, categoryid]) // [name, categoryid] burada body den almış olduğu catid yi alıp ona göre hangi id ye göre  update yapılacağını belirtiyoruz
-        res.redirect("/admin/categories?action=edit&blogid=" + categoryid)
+        await Category.update({
+            name: name
+        }, {
+            where: {
+                categoryid: categoryid
+            }
+        })
+        return res.redirect("/admin/categories?action=edit&blogid=" + categoryid)
 
     } catch (err) {
         console.log(err)
     }
 })
+
 // Blog List - get
 router.get("/blogs", async (req, res) => {
     try {

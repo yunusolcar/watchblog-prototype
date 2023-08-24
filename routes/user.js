@@ -18,7 +18,7 @@ router.use("/blogs/category/:categoryid", async (req, res) => {
         })
 
         res.render("users/blogs", {
-            title: "Tüm Saatler", //statik veri
+            title: "all", //statik veri
             blogs: blogs, //dinamik veri
             categories: categories
         })
