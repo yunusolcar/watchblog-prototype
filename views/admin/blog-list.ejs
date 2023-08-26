@@ -34,16 +34,15 @@
                     <tbody>
                         <% blogs.forEach(blog => { %>
                         <tr>
-                            <td><%= blog.dataValues.blogid %></td>
+                            <td><%= blog.dataValues.id %></td>
                             <!--sequelize kullandığımızdan dataValues objesinin altında blogid bilgisine ulaşırız -->
                             <td>
                                 <img src="/static/uploads/<%= blog.dataValues.image %>" class="img-fluid" alt="">
                             </td>
                             <td><%= blog.dataValues.title %></td>
                             <td>
-                                <a href="/admin/blogs/<%= blog.dataValues.blogid %>"
-                                    class="btn btn-sm btn-primary">Edit</a>
-                                <a href="/admin/blog/delete/<%= blog.dataValues.blogid %>"
+                                <a href="/admin/blogs/<%= blog.dataValues.id %>" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="/admin/blog/delete/<%= blog.dataValues.id %>"
                                     class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>

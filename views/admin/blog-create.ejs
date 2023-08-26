@@ -14,7 +14,6 @@
             <div class="col-md-12 mt-3">
 
                 <form method="POST" enctype="multipart/form-data">
-                    <!--enctype ile servera dosya taşınır-->
                     <div class="row mb-3">
                         <label for="title" class="col-sm-2 col-form-label">Title</label>
                         <div class="col-sm-8">
@@ -42,7 +41,7 @@
                             <select name="category" id="category" class="form-select">
                                 <option value="-1" selected>Choose</option>
                                 <% categories.forEach(category => { %>
-                                <option value="<%= category.categoryid%>"><%= category.name%></option>
+                                <option value="<%= category.id%>"><%= category.name%></option>
                                 <% }) %>
                             </select>
                         </div>

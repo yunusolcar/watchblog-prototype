@@ -1,9 +1,11 @@
 const express = require("express")
 const path = require("path")
-const sequelize = require("./models/db")
-const dummyData = require("./models/dummy-data")
 const userRoutes = require("./routes/user")
 const adminRoutes = require("./routes/admin")
+const sequelize = require("./models/db")
+const dummyData = require("./models/dummy-data")
+const Category = require("./models/category")
+const Blog = require("./models/blog")
 
 const app = express()
 
@@ -19,29 +21,28 @@ app.use(express.urlencoded({
 app.use("/libs", express.static(path.join(__dirname, "node_modules")))
 app.use("/static", express.static(path.join(__dirname, "public")))
 
-//Relations - one to many
-const Category = require("./models/category")
-const Blog = require("./models/blog")
+//Routes
+app.use("/admin", adminRoutes)
+app.use(userRoutes)
 
+
+//One to Many - Relations
 Category.hasMany(Blog, {
     foreignKey: {
         name: 'categoryId',
-        allowNull: true
+        allowNull: false,
+        defaultValue: 1 // boş geçilen kategoriler 1. ye gider
     }
-}) 
+})
 Blog.belongsTo(Category)
 
-async function clearDb() {
+async function dbCheck() {
     await sequelize.sync({
         force: true
     })
     await dummyData()
 }
-clearDb()
-
-//Routes
-app.use("/admin", adminRoutes)
-app.use(userRoutes)
+dbCheck()
 
 //Port
 app.listen(3000, function () {

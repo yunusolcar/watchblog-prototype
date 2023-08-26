@@ -33,15 +33,15 @@
                          <tbody>
                               <% categories.forEach(category => { %>
                               <tr>
-                                   <td><%= category.dataValues.categoryid %></td>
+                                   <td><%= category.dataValues.id %></td>
                                    <!--sequelize kullandığımızdan dataValues objesinin altında name bilgisine ulaşırız -->
                                    <td>
                                         <%= category.dataValues.name %>
                                    </td>
                                    <td>
-                                        <a href="/admin/categories/<%= category.dataValues.categoryid %>"
+                                        <a href="/admin/categories/<%= category.dataValues.id %>"
                                              class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="/admin/category/delete/<%= category.dataValues.categoryid %>"
+                                        <a href="/admin/category/delete/<%= category.dataValues.id %>"
                                              class="btn btn-sm btn-danger">Delete</a>
                                    </td>
                               </tr>

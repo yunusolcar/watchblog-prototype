@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-12 mt-3">
                 <form method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="blogid" value="<%= blog.blogid %>">
+                    <input type="hidden" name="blogid" value="<%= blog.id %>">
                     <input type="hidden" name="image" value="<%= blog.image %>">
                     <div class="row mb-3">
                         <label for="title" class="col-sm-2 col-form-label">Title</label>
@@ -25,7 +25,8 @@
                     <div class="row mb-3">
                         <label for="description" class="col-sm-2 col-form-label">Description</label>
                         <div class="col-sm-8">
-                            <textarea name="description" class="form-control" rows="10"><%= blog.description %></textarea>
+                            <textarea name="description" class="form-control"
+                                rows="10"><%= blog.description %></textarea>
                         </div>
                     </div>
 
@@ -43,12 +44,12 @@
                             <select name="category" id="category" class="form-select">
                                 <option value="-1" selected>Choose</option>
                                 <% categories.forEach(category => { %>
-                                <option value="<%= category.dataValues.categoryid %>"><%= category.dataValues.name %>
+                                <option value="<%= category.dataValues.id %>"><%= category.dataValues.name %>
                                 </option>
                                 <% })%>
                             </select>
                             <script>
-                                document.querySelector("#category").value = "<%=blog.categoryid%>"
+                                document.querySelector("#category").value = "<%=blog.categoryId%>"
                             </script>
                         </div>
                     </div>

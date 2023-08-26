@@ -3,8 +3,8 @@ const {
 } = require("sequelize")
 const sequelize = require("../models/db")
 
-const Blog = sequelize.define("blog", { // her bir modele id eklemek gerekmez. her modele bir id kolonu otomatik tanınıt
-    title: {
+const Blog = sequelize.define("blog", {
+     title: {
           type: DataTypes.STRING,
           allowNull: false
      },
@@ -15,7 +15,7 @@ const Blog = sequelize.define("blog", { // her bir modele id eklemek gerekmez. h
      image: {
           type: DataTypes.STRING,
           allowNull: false
-     }
+     },
 })
 
 module.exports = Blog
