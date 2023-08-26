@@ -30,15 +30,17 @@ app.use(userRoutes)
 Category.hasMany(Blog, {
     foreignKey: {
         name: 'categoryId',
-        allowNull: false,
-        defaultValue: 1 // boş geçilen kategoriler 1. ye gider
-    }
+        allowNull: false, //bir blogun kesinlikle bir kategoriye sahip olması gerekiyor
+        // defaultValue: 1 // boş geçilen kategoriler 1. ye gider
+    },
+    onDelete: "RESTRICT", // Eğer kategoriye ait bir veri varsa normal yoldan silinir ama restrict sayesinde kategori bilgisi olan blog bilgisi varsa kategori silinmez. mesela blog=[elma, meyve] meyve kategorisi silindiğinde elme verisi silinmez
+    onUpdate: "RESTRICT" // aynı şekilde güncelleme yapılır
 })
 Blog.belongsTo(Category)
 
 async function dbCheck() {
     await sequelize.sync({
-        force: true
+        alter: true
     })
     await dummyData()
 }
