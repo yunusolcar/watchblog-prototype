@@ -28,10 +28,9 @@ Category.hasMany(Blog, {
         name: 'categoryId',
         allowNull: true
     }
-}) // 1 kategori 1 den fazla bloga sahip olur. yani blog tablosuna categoryId eklenir
-Blog.belongsTo(Category) // 1 blog 1 kategoriye sahip olur
+}) 
+Blog.belongsTo(Category)
 
-// IIFE - asenkron bir blog
 async function clearDb() {
     await sequelize.sync({
         force: true
