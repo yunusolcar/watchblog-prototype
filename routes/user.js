@@ -5,11 +5,11 @@ const Category = require("../models/category")
 const router = express.Router();
 
 router.use("/blogs/category/:categoryid", async (req, res) => {
-    const cat_id = req.params.categoryid
+    const id = req.params.categoryid
     try {
         const blogs = await Blog.findAll({
             where: {
-                categoryid: cat_id
+                categoryId: id
             },
             raw: true
         })
