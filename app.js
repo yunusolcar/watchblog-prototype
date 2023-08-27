@@ -29,19 +29,17 @@ app.use(userRoutes)
 //Many to Many Relations
 Blog.belongsToMany(Category, {
     through: "blogCategories" //through ile kesişim tablosu oluşur. tablo ismi blogCategories olur
-}) //bir blog birden fazla kategoriye sahip olur
+});//bir blog birden fazla kategoriye sahip olur
 
 Category.belongsToMany(Blog, {
     through: "blogCategories"
-})
+});
 
-async function dbCheck() {
-    await sequelize.sync({
-        alter: true
-    })
-    await dummyData()
-}
-dbCheck()
+(async () => {
+    await sequelize.sync({ force: true });
+    await dummyData();
+})();
+
 
 //Port
 app.listen(3000, function () {

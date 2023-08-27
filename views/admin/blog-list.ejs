@@ -41,7 +41,9 @@
                                 <img src="/static/uploads/<%= blog.dataValues.image %>" class="img-fluid" alt="">
                             </td>
                             <td><%= blog.dataValues.title %></td>
-                            <td><%= blog.dataValues.category.name %></td>
+                            <td> <% blog.categories.forEach(category => { %>
+                                <p> <%= category.name %> </p>
+                                <% }) %></td>
                             <!--eager loading-->
                             <td>
                                 <a href="/admin/blogs/<%= blog.dataValues.id %>" class="btn btn-sm btn-primary">Edit</a>

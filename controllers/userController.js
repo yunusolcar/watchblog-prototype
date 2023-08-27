@@ -6,11 +6,14 @@ const {
 } = require("sequelize")
 
 exports.blogsById = async (req, res) => {
-     const cat_id = req.params.categoryid
+     const id = req.params.categoryid
      try {
           const blogs = await Blog.findAll({
-               where: {
-                    categoryId: cat_id
+               include: {
+                    model: Category,
+                    where: {
+                         id: id
+                    }
                },
                raw: true
           })
