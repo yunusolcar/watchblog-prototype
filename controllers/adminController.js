@@ -230,7 +230,11 @@ exports.getBlogs = async (req, res) => {
      try {
           // const [blogs, ] = await db.execute("SELECT blogid, title, image FROM blog")
           const blogs = await Blog.findAll({
-               attributes: ["id", "title", "description", "image"]
+               attributes: ["id", "title", "description", "image"],
+               include: {
+                    model: Category,
+                    attributes: ["name"]
+               } //join işlemi yaparak hem blog hem de kategori bilgisini alıyoruz // category modelinden sadece name alanını alıyoruz
           })
           res.render("admin/blog-list", {
                title: "Blog List",

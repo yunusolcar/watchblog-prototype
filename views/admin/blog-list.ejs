@@ -28,6 +28,7 @@
                             <th style="width: 50px;">ID</th>
                             <th style="width: 150px;">Image</th>
                             <th>Title</th>
+                            <th>Category</th>
                             <th style="width: 150px;"></th>
                         </tr>
                     </thead>
@@ -40,6 +41,8 @@
                                 <img src="/static/uploads/<%= blog.dataValues.image %>" class="img-fluid" alt="">
                             </td>
                             <td><%= blog.dataValues.title %></td>
+                            <td><%= blog.dataValues.category.name %></td>
+                            <!--eager loading-->
                             <td>
                                 <a href="/admin/blogs/<%= blog.dataValues.id %>" class="btn btn-sm btn-primary">Edit</a>
                                 <a href="/admin/blog/delete/<%= blog.dataValues.id %>"
