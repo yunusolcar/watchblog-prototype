@@ -26,17 +26,14 @@ app.use("/admin", adminRoutes)
 app.use(userRoutes)
 
 
-//One to Many - Relations
-Category.hasMany(Blog, {
-    foreignKey: {
-        name: 'categoryId',
-        allowNull: false, //bir blogun kesinlikle bir kategoriye sahip olması gerekiyor
-        // defaultValue: 1 // boş geçilen kategoriler 1. ye gider
-    },
-    onDelete: "RESTRICT", // Eğer kategoriye ait bir veri varsa normal yoldan silinir ama restrict sayesinde kategori bilgisi olan blog bilgisi varsa kategori silinmez. mesela blog=[elma, meyve] meyve kategorisi silindiğinde elme verisi silinmez
-    onUpdate: "RESTRICT" // aynı şekilde güncelleme yapılır
+//Many to Many Relations
+Blog.belongsToMany(Category, {
+    through: "blogCategories" //through ile kesişim tablosu oluşur. tablo ismi blogCategories olur
+}) //bir blog birden fazla kategoriye sahip olur
+
+Category.belongsToMany(Blog, {
+    through: "blogCategories"
 })
-Blog.belongsTo(Category)
 
 async function dbCheck() {
     await sequelize.sync({
