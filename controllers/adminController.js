@@ -189,11 +189,15 @@ exports.getCategoryEdit = async (req, res) => {
      try {
           //const [categories, ] = await db.execute("SELECT * FROM category WHERE categoryid=?", [categoryid])
           const category = await Category.findByPk(categoryid) //Burada Primary Key'e göre arama yapmaktayız çünkü id'ye göre işlem yapmaktayız. Bir dizi değil sadece bir obje gelir. findOne ile de yapılabilir. bu şekilde yapılırsa where eklemek gerekir
+          const blogs = await category.getBlogs() //instance üzerinden otomatik bir method oluşturulur. model ismi blog oldugundan ve get metodu ile geldiğinden getBlog + çoğul blog geldiğinden getBlogs olur 
+          //Burada blog bilgileri kategori modeli üzerinden  gelir.
+          //Blog index üzerinden hasMany() ile bağlandığı için özel bir şekilde tanımlanır
 
           if (category) {
                return res.render("admin/category-edit", { //return edilerek aşağıdaki kodların çalışması engellenir
                     title: category.dataValues.name,
                     category: category.dataValues,
+                    blogs: blogs
                });
           }
           res.redirect("/admin/categories")

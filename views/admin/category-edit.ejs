@@ -29,6 +29,33 @@
                          </div>
                     </form>
                </div>
+               <table class="table table-bordered table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">ID</th>
+                            <th style="width: 150px;">Image</th>
+                            <th>Title</th>
+                            <th style="width: 150px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% blogs.forEach(blog => { %>
+                        <tr>
+                            <td><%= blog.dataValues.id %></td>
+                            <!--sequelize kullandığımızdan dataValues objesinin altında blogid bilgisine ulaşırız -->
+                            <td>
+                                <img src="/static/uploads/<%= blog.dataValues.image %>" class="img-fluid" alt="">
+                            </td>
+                            <td><%= blog.dataValues.title %></td>
+                            <td>
+                                <a href="/admin/blogs/<%= blog.dataValues.id %>" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="/admin/blog/delete/<%= blog.dataValues.id %>"
+                                    class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
           </div>
      </div>
 
