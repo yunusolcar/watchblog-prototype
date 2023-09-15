@@ -158,7 +158,7 @@ exports.postBlogEdit = async (req, res) => {
      if (req.file) {
           image = req.file.filename
 
-          fs.unlink("./public/uploads/" + req.body.image, err => {
+          fs.unlink("./public/images/" + req.body.image, err => {
                console.log(err);
           })
      } else {
