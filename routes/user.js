@@ -1,14 +1,22 @@
 const express = require("express");
-const db = require('../data/db')
+const db = require('../data/db');
+const Blog = require("../models/blog");
+const Category = require("../models/category");
 const router = express.Router();
 
 
 router.use("/blogs/category/:categoryid", async (req, res) => {
     const id = req.params.categoryid;
     try {
-        const [blogs, ] = await db.execute("SELECT * FROM blog WHERE categoryid=?", [id]);
-        const [categories, ] = await db.execute("SELECT * FROM category");
-
+        const blogs = await Blog.findAll({
+            where: {
+                categoryid: id
+            },
+            raw: true
+        });
+        const categories = await Category.findAll({
+            raw: true
+        });
         res.render("users/blogs", {
             title: "Tüm Saatler", //statik veri
             blogs: blogs, //dinamik veri
@@ -27,9 +35,12 @@ router.use("/blogs/:blogid", async (req, res) => { // /blogs/? soru işareti yer
     const id = req.params.blogid;
     //console.log("id = " + id) // Burada url e yazılan id bilgisi konsola yazıldı. buraya girilen id deki veriler alınır. bütün kayıtlar alınmaz
     try {
-        const [blogs, ] = await db.execute("SELECT * FROM blog WHERE blogid=?", [id]); // Soru işareti ile koyduktan sonra execute() 'a ikinci bir parametreyi Dizi olarak ekliyoruz. iki parametre varsa iki değer atanır
-
-        const blog = blogs[0];
+        const blog = await Blog.findOne({
+            where: {
+                blogid: id
+            },
+            raw: true
+        });
         if (blog) {
             return res.render("users/blog-details", { // ilgili id si olan obje database de varsa  return dönüp aşağıdaki işlemleri yapar yok ise anasayfaya redirect eder
                 title: blog.title, //diinamik veri
@@ -46,9 +57,12 @@ router.use("/blogs/:blogid", async (req, res) => { // /blogs/? soru işareti yer
 //Blogs
 router.use("/blogs", async (req, res) => {
     try {
-        const [blogs, ] = await db.execute("SELECT * FROM blog"); // [blogs, ] = blogs değişkenine, dizinin ilk elemanı atanır. 
-        const [categories, ] = await db.execute("SELECT * FROM category"); // [category, ] = category değişkenine, dizinin ilk elemanı atanır.
-        // console.log(blogs[2].title) 2. indisteki kaydın title bilgisini konsola yazdırır
+        const blogs = await Blog.findAll({
+            raw: true
+        });
+        const categories = await Category.findAll({
+            raw: true
+        });
         res.render("users/blogs", {
             title: "Tüm Saatler",
             blogs: blogs,
@@ -63,9 +77,12 @@ router.use("/blogs", async (req, res) => {
 //Index
 router.use("/", async (req, res) => {
     try {
-        const [blogs, ] = await db.execute("SELECT * FROM blog"); // [blogs, ] = blogs değişkenine, dizinin ilk elemanı atanır. 
-        const [categories, ] = await db.execute("SELECT * FROM category"); // [category, ] = category değişkenine, dizinin ilk elemanı atanır.
-        // console.log(blogs[2].title) 2. indisteki kaydın title bilgisini konsola yazdırır
+        const blogs = await Blog.findAll({
+            raw: true
+        });
+        const categories = await Category.findAll({
+            raw: true
+        });
         res.render("users/index", {
             title: "Popüler Saatler", //statik veri
             blogs: blogs,

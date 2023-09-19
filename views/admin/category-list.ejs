@@ -14,7 +14,7 @@
                <div class="col-md-12 mt-3">
                     <% if (action != "undefined" && action =="edit") { %>
                     <!--Action varsa (yani undefined değilse ve edit ise aşağıdaki kodu çalıştırır)-->
-                    <div class="alert alert-success">The category with ID <%= categoryid %> has been updated</div>
+                    <div class="alert alert-success">ID <%= categoryid %> has been updated</div>
                     <% } %>
                     <% if (action != "undefined" && action =="create") { %>
                     <div class="alert alert-success">Category Created</div>
@@ -33,14 +33,14 @@
                          <tbody>
                               <% categories.forEach(category => { %>
                               <tr>
-                                   <td><%= category.categoryid %></td>
+                                   <td><%= category.dataValues.categoryid %></td>
                                    <td>
-                                        <%= category.name %>
+                                        <%= category.dataValues.name %>
                                    </td>
                                    <td>
-                                        <a href="/admin/categories/<%= category.categoryid %>"
+                                        <a href="/admin/categories/<%= category.dataValues.categoryid %>"
                                              class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="/admin/category/delete/<%= category.categoryid %>"
+                                        <a href="/admin/category/delete/<%= category.dataValues.categoryid %>"
                                              class="btn btn-sm btn-danger">Delete</a>
                                    </td>
                               </tr>

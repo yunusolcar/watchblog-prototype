@@ -1,10 +1,14 @@
 const express = require("express");
+const fs = require("fs");
 const db = require('../data/db');
+const Blog = require("../models/blog");
+const Category = require("../models/category");
+const imageUpload = require("../helpers/image-uploads");
 const router = express.Router();
 
 //Delete Blog - get
 router.get("/blog/delete/:blogid", async (req, res) => {
-    const blogid = req.params.blogid;// Parametreden alınan blogid
+    const blogid = req.params.blogid; // Parametreden alınan blogid
 
     try {
         const [blogs, ] = await db.execute("SELECT * FROM blog WHERE blogid=?", [blogid]);
@@ -60,11 +64,11 @@ router.post("/category/delete/:categoryid", async (req, res) => {
         console.log(err);
     }
 });
-//Crate Blog - get
+//Create Blog - get
 router.get("/blog/create", async (req, res) => {
 
     try {
-        const [categories, ] = await db.execute("SELECT * FROM category");
+        const categories = await Category.findAll();
         res.render("admin/blog-create", {
             title: "Add Blog",
             categories: categories
@@ -75,15 +79,20 @@ router.get("/blog/create", async (req, res) => {
     }
 });
 //Create Blog - post
-router.post("/blog/create", async (req, res) => {
+router.post("/blog/create", imageUpload.upload.single("image"), async (req, res) => {
     const title = req.body.title; // req.body.title => blog-create deki name alanından geliyor.
     const description = req.body.description;
-    const image = req.body.image;
+    const image = req.file.filename;
     const kategori = req.body.kategori;
     //  console.log(title, description, image, category) //formun içerisine gelen bilgiler body ye gelir.
 
     try {
-        await db.execute("INSERT INTO blog(title, description, image, categoryid) VALUES (?,?,?,?)", [title, description, image, kategori]);
+        await Blog.create({
+            title: title,
+            description: description,
+            image: image,
+            categoryid: kategori //categoryid veritabanındaki kayıtlı olan ismi
+        });
         res.redirect("/admin/blogs?action=create");
     } catch (err) {
         console.log(err);
@@ -106,7 +115,9 @@ router.post("/category/create", async (req, res) => {
     const name = req.body.name;
 
     try {
-        await db.execute("INSERT INTO category(name) VALUES (?)", [name]);
+        await Category.create({
+            name: name
+        });
         res.redirect("/admin/categories?action=create");
     } catch (err) {
         console.log(err);
@@ -117,34 +128,50 @@ router.get("/blogs/:blogid", async (req, res) => {
     const blogid = req.params.blogid; //"router.get("/blogs/:blogid") buradan blogid gelir
 
     try {
-        const [blogs, ] = await db.execute("SELECT * FROM blog WHERE blogid=?", [blogid]);
-        const [categories, ] = await db.execute("SELECT * FROM category");
-        const blog = blogs[0];
+        const blog = await Blog.findByPk(blogid);
+        const categories = await Category.findAll()
 
         if (blog) {
             return res.render("admin/blog-edit", { //return edilerek aşağıdaki kodların çalışması engellenir
-                title: blog.title,
-                blog: blog,
+                title: blog.dataValues.title,
+                blog: blog.dataValues,
                 categories: categories
             });
         }
-        res.redirect("admin/blog");
+        res.redirect("admin/blogs");
     } catch (err) {
         console.log(err);
     }
 });
 //Edit Blog - post
-router.post("/blogs/:blogid", async (req, res) => {
+router.post("/blogs/:blogid", imageUpload.upload.single("image"), async (req, res) => {
 
     const blogid = req.body.blogid;
     const title = req.body.title;
     const description = req.body.description;
-    const image = req.body.image;
+    let image = req.body.image;
     const kategoriid = req.body.kategori;
 
+    if (req.file) {
+        image = req.file.filename;
+        fs.unlink("./public/images/" + req.body.image, err => {
+            console.log(err);
+        });
+    }
+
     try {
-        await db.execute("UPDATE blog SET title=?, description=?, image=?, categoryid=? WHERE blogid=?", [title, description, image, kategoriid, blogid]); // [title, description, image, categoryid, blogid] burada body den almış olduğu blogid yi alıp ona göre hangi id yi update edeceğimizi belirtiyoruz
-        res.redirect("/admin/blogs?action=edit&blogid=" + blogid);
+        // await db.execute("UPDATE blog SET title=?, description=?, image=?, categoryid=? WHERE blogid=?", [title, description, image, kategoriid, blogid]); // [title, description, image, categoryid, blogid] burada body den almış olduğu blogid yi alıp ona göre hangi id yi update edeceğimizi belirtiyoruz
+        const blog = await Blog.findByPk(blogid);
+        if (blog) {
+            blog.title = title;
+            blog.description = description;
+            blog.image = image;
+            blog.categoryid = kategoriid;
+
+            await blog.save();
+            return res.redirect("/admin/blogs?action=edit&blogid=" + blogid);
+        }
+        res.redirect("/admin/blogs");
     } catch (err) {
         console.log(err);
     }
@@ -154,13 +181,11 @@ router.get("/categories/:categoryid", async (req, res) => {
     const categoryid = req.params.categoryid; //"router.get("/categories/:categoryid") buradan categoryid gelir
 
     try {
-        const [categories, ] = await db.execute("SELECT * FROM category WHERE categoryid=?", [categoryid]);
-        const category = categories[0];
-
+        const category = await Category.findByPk(categoryid);
         if (category) {
             return res.render("admin/category-edit", { //return edilerek aşağıdaki kodların çalışması engellenir
-                title: category.name,
-                category: category,
+                title: category.dataValues.name,
+                category: category.dataValues
             });
         }
         res.redirect("admin/categories");
@@ -175,9 +200,15 @@ router.post("/categories/:categoryid", async (req, res) => {
     const name = req.body.name;
 
     try {
-        await db.execute("UPDATE category SET name=? WHERE categoryid=?", [name, categoryid]); // [name, categoryid] burada body den almış olduğu catid yi alıp ona göre hangi id ye göre  update yapılacağını belirtiyoruz
-        res.redirect("/admin/categories?action=edit&categoryid=" + categoryid);
-
+        // await db.execute("UPDATE category SET name=? WHERE categoryid=?", [name, categoryid]); // [name, categoryid] burada body den almış olduğu catid yi alıp ona göre hangi id ye göre  update yapılacağını belirtiyoruz
+        await Category.update({
+            name: name
+        }, {
+            where: {
+                categoryid: categoryid
+            }
+        });
+        return res.redirect("/admin/categories?action=edit&categoryid=" + categoryid);
     } catch (err) {
         console.log(err);
     }
@@ -185,7 +216,9 @@ router.post("/categories/:categoryid", async (req, res) => {
 // Blog List - get
 router.get("/blogs", async (req, res) => {
     try {
-        const [blogs, ] = await db.execute("SELECT blogid, title, image FROM blog");
+        const blogs = await Blog.findAll({
+            attributes: ["blogid", "title", "description", "image"]
+        });
         res.render("admin/blog-list", {
             title: "Blog List",
             blogs: blogs,
@@ -196,14 +229,14 @@ router.get("/blogs", async (req, res) => {
         console.log(err);
     }
 });
-// Blog List - post
+// Category List - post
 router.get("/categories", async (req, res) => {
     try {
-        const [categories, ] = await db.execute("SELECT * FROM category");
+        const categories = await Category.findAll();
         res.render("admin/category-list", {
             title: "Category List",
             categories: categories,
-            action: req.query.action, //Query içerisinde oluşturulmuş olan key bilgisi actiondan gelir 
+            action: req.query.action,
             categoryid: req.query.categoryid
         });
     } catch (err) {
