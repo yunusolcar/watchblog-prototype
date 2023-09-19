@@ -2,7 +2,10 @@ const express = require("express");
 const path = require("path");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
-
+const sequelize = require("./data/db");
+const dummyData = require("./data/dummy-data");
+const Category = require("./models/category");
+const Blog = require("./models/blog");
 const app = express();
 
 //Template Engine
@@ -20,6 +23,26 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 //Routes
 app.use("/admin", adminRoutes);
 app.use(userRoutes);
+
+//One to Many
+Category.hasMany(Blog, {
+    foreignKey: {
+        name: 'categoryId',
+        allowNull: false
+        // defaultValue: 1
+    }
+});
+Blog.belongsTo(Category);
+
+
+// IIFE
+(async () => {
+    await sequelize.sync({
+        force: true
+    });
+    await dummyData();
+})();
+
 
 //Port
 app.listen(3000, function () {

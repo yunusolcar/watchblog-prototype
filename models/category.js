@@ -4,12 +4,6 @@ const {
 const sequelize = require("../data/db");
 
 const Category = sequelize.define("category", {
-     categoryid: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          allowNull: false,
-          primaryKey: true
-     },
      name: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -17,31 +11,5 @@ const Category = sequelize.define("category", {
 }, {
      timestamps: false
 });
-
-async function sync() {
-     await Category.sync({
-          alter: true
-     });
-
-
-     const count = await Category.count();
-
-     if (count == 0) {
-
-     await Category.bulkCreate([{
-               name: "Mechanical Watches"
-          },
-          {
-               name: "Digital Watches"
-          },
-          {
-               name: "Smart Watches"
-          }
-     ])
-     console.log("Category Added");
-}}
-
-sync();
-
 
 module.exports = Category;
