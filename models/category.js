@@ -20,7 +20,7 @@ const Category = sequelize.define("category", {
 
 async function sync() {
      await Category.sync({
-          force: true
+          alter: true
      });
 
 

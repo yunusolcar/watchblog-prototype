@@ -30,7 +30,7 @@ const Blog = sequelize.define("blog", {
 
 async function sync() {
      await Blog.sync({
-          force: true
+          alter: true
      });
      console.log("blog table added");
 

@@ -8,16 +8,17 @@ const router = express.Router();
 
 //Delete Blog - get
 router.get("/blog/delete/:blogid", async (req, res) => {
-    const blogid = req.params.blogid; // Parametreden alınan blogid
+    const blogid = req.params.blogid; // Formun içerisinden alınan blogid
 
     try {
-        const [blogs, ] = await db.execute("SELECT * FROM blog WHERE blogid=?", [blogid]);
-        const blog = blogs[0];
-
-        res.render("admin/blog-delete", {
-            title: "Delete Blog",
-            blog: blog
-        });
+        const blog = await Blog.findByPk(blogid);
+        if (blog) {
+            return res.render("admin/blog-delete", {
+                title: "Delete Blog",
+                blog: blog
+            });
+        }
+        res.redirect("/admin/blogs");
 
     } catch (err) {
         console.log(err);
@@ -28,8 +29,12 @@ router.post("/blog/delete/:blogid", async (req, res) => {
     const blogid = req.body.blogid; // Formun içerisinden alınan blogid
 
     try {
-        await db.execute("DELETE  FROM blog WHERE blogid=?", [blogid]);
-        res.redirect("/admin/blogs?action=delete");
+        const blog = await Blog.findByPk(blogid);
+        if (blog) {
+            await blog.destroy();
+            return res.redirect("/admin/blogs?action=delete");
+        }
+        res.redirect("/admin/blogs");
 
     } catch (err) {
         console.log(err);
@@ -40,9 +45,7 @@ router.get("/category/delete/:categoryid", async (req, res) => {
     const categoryid = req.params.categoryid; // Parametreden alınan blogid
 
     try {
-        const [categories, ] = await db.execute("SELECT * FROM category WHERE categoryid=?", [categoryid]);
-        const category = categories[0];
-
+        const category = await Category.findByPk(categoryid);
         res.render("admin/category-delete", {
             title: "Delete Category",
             category: category
@@ -57,7 +60,11 @@ router.post("/category/delete/:categoryid", async (req, res) => {
     const categoryid = req.body.categoryid; // Formun içerisinden alınan blogid
 
     try {
-        await db.execute("DELETE  FROM category WHERE categoryid=?", [categoryid]);
+        await Category.destroy({
+            where: {
+                categoryid: categoryid
+            }
+        });
         res.redirect("/admin/categories?action=delete")
 
     } catch (err) {
