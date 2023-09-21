@@ -28,6 +28,7 @@
                             <th style="width: 50px;">ID</th>
                             <th style="width: 150px;">Image</th>
                             <th>Title</th>
+                            <th>Category</th>
                             <th style="width: 150px;"></th>
                         </tr>
                     </thead>
@@ -38,10 +39,16 @@
                             <td>
                                 <img src="/static/images/<%= blog.dataValues.image %>" class="img-fluid" alt="">
                             </td>
-                            <td><%= blog.title %></td>
+                            <td><%= blog.dataValues.title %></td>
+                            <td>
+                                <% blog.categories.forEach(category => { %>
+                                <p> <%= category.name %> </p>
+                                <% }) %>
+                            </td>
                             <td>
                                 <a href="/admin/blogs/<%= blog.dataValues.id %>" class="btn btn-sm btn-primary">Edit</a>
-                                <a href="/admin/blog/delete/<%= blog.dataValues.id %>" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="/admin/blog/delete/<%= blog.dataValues.id %>"
+                                    class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>
                         <% }) %>

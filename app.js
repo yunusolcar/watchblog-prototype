@@ -24,16 +24,13 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 app.use("/admin", adminRoutes);
 app.use(userRoutes);
 
-//One to Many
-Category.hasMany(Blog, {
-    foreignKey: {
-        name: 'categoryId',
-        allowNull: false
-        // defaultValue: 1
-    }
+//Many to Many
+Blog.belongsToMany(Category, {
+    through: "blogCategories"
+}); // 3.tablo
+Category.belongsToMany(Blog, {
+    through: "blogCategories"
 });
-Blog.belongsTo(Category);
-
 
 // IIFE
 (async () => {

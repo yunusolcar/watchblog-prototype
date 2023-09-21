@@ -8,8 +8,11 @@ exports.getBlogsByCatId = async (req, res) => {
      const id = req.params.categoryid;
      try {
           const blogs = await Blog.findAll({
-               where: {
-                    categoryId: id
+               include: {
+                    model: Category,
+                    where: {
+                         id: id
+                    }
                },
                raw: true
           });

@@ -184,10 +184,15 @@ exports.getCategoryEdit = async (req, res) => {
 
      try {
           const category = await Category.findByPk(categoryid);
+          const blogs = await category.getBlogs(); //model instance - lazy loading
+          const countBlog = await category.countBlogs();
+
           if (category) {
                return res.render("admin/category-edit", { //return edilerek aşağıdaki kodların çalışması engellenir
                     title: category.dataValues.name,
-                    category: category.dataValues
+                    category: category.dataValues,
+                    blogs: blogs,
+                    countBlog: countBlog
                });
           }
           res.redirect("admin/categories");
@@ -219,7 +224,11 @@ exports.postCategoryEdit = async (req, res) => {
 exports.getBlogList = async (req, res) => {
      try {
           const blogs = await Blog.findAll({
-               attributes: ["id", "title", "description", "image"]
+               attributes: ["id", "title", "description", "image"],
+               include: {
+                    model: Category,
+                    attributes: ["name"]
+               } //join işlemi - hem category hem blog gelir //Eager Loading
           });
           res.render("admin/blog-list", {
                title: "Blog List",
