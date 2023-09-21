@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/blog/delete/:blogid", adminController.getDeleteBlog);
 
 //Delete Blog - post
-router.post("/blog/delete/:blogid", adminController.getDeleteBlog);
+router.post("/blog/delete/:blogid", adminController.postDeleteBlog);
 
 //Delete Category - get
 router.get("/category/delete/:categoryid", adminController.getCategoryDelete);

@@ -1,6 +1,9 @@
 const fs = require("fs");
 const Blog = require("../models/blog");
 const Category = require("../models/category");
+const {
+     Op
+} = require("sequelize");
 
 exports.getDeleteBlog = async (req, res) => {
      const blogid = req.params.blogid; // Formun içerisinden alınan blogid
@@ -130,7 +133,15 @@ exports.getBlogEdit = async (req, res) => {
      const blogid = req.params.blogid; //"router.get("/blogs/:blogid") buradan blogid gelir
 
      try {
-          const blog = await Blog.findByPk(blogid);
+          const blog = await Blog.findOne({
+               where: {
+                    id: blogid
+               },
+               include: {
+                    model: Category,
+                    attributes: ["id"]
+               }
+          });
           const categories = await Category.findAll()
 
           if (blog) {
@@ -152,7 +163,8 @@ exports.postBlogEdit = async (req, res) => {
      const title = req.body.title;
      const description = req.body.description;
      let image = req.body.image;
-     const kategoriid = req.body.kategori;
+     const kategoriIds = req.body.categories;
+     console.log(kategoriIds);
 
      if (req.file) {
           image = req.file.filename;
@@ -163,12 +175,34 @@ exports.postBlogEdit = async (req, res) => {
 
      try {
           // await db.execute("UPDATE blog SET title=?, description=?, image=?, categoryid=? WHERE blogid=?", [title, description, image, kategoriid, blogid]); // [title, description, image, categoryid, blogid] burada body den almış olduğu blogid yi alıp ona göre hangi id yi update edeceğimizi belirtiyoruz
-          const blog = await Blog.findByPk(blogid);
+          const blog = await Blog.findOne({
+               where: {
+                    id: blogid
+               },
+               include: {
+                    model: Category,
+                    attributes: ["id"]
+               }
+          });
+
           if (blog) {
                blog.title = title;
                blog.description = description;
                blog.image = image;
-               blog.categoryId = kategoriid;
+
+               if (kategoriIds == undefined) {
+                    await blog.removeCategories(blog.categories); //https://sequelize.org/docs/v6/core-concepts/assocs/#foohasmanybar
+               } else {
+                    await blog.removeCategories(blog.categories);
+                    const selectedCategories = await Category.findAll({
+                         where: {
+                              id: {
+                                   [Op.in]: kategoriIds
+                              }
+                         }
+                    });
+                    await blog.addCategories(selectedCategories);
+               }
 
                await blog.save();
                return res.redirect("/admin/blogs?action=edit&blogid=" + blogid);
