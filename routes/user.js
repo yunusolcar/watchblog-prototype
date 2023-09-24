@@ -1,4 +1,5 @@
 const express = require("express");
+<<<<<<< HEAD
 const Blog = require("../models/blog")
 const Category = require("../models/category")
 
@@ -83,5 +84,22 @@ router.use("/", async (req, res) => {
         console.log(err)
     }
 })
+=======
+const userController = require("../controllers/userController");
+
+const router = express.Router();
+
+//Blogs by Category id
+router.use("/blogs/category/:categoryid", userController.getBlogsByCatId);
+
+//Blog details
+router.use("/blogs/:blogid", userController.getBlogDetails);
+
+//Blogs
+router.use("/blogs", userController.getBlogList);
+
+//Index
+router.use("/", userController.getIndexPage);
+>>>>>>> old-state
 
 module.exports = router;

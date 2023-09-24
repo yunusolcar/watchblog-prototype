@@ -14,7 +14,7 @@
                <div class="col-md-12 mt-3">
                     <% if (action != "undefined" && action =="edit") { %>
                     <!--Action varsa (yani undefined değilse ve edit ise aşağıdaki kodu çalıştırır)-->
-                    <div class="alert alert-success">The category with ID <%= categoryid %> has been updated</div>
+                    <div class="alert alert-success">ID <%= categoryid %> has been updated</div>
                     <% } %>
                     <% if (action != "undefined" && action =="create") { %>
                     <div class="alert alert-success">Category Created</div>
@@ -33,15 +33,25 @@
                          <tbody>
                               <% categories.forEach(category => { %>
                               <tr>
+<<<<<<< HEAD
                                    <td><%= category.dataValues.categoryid %></td>
                                    <!--sequelize kullandığımızdan dataValues objesinin altında name bilgisine ulaşırız -->
+=======
+                                   <td><%= category.dataValues.id %></td>
+>>>>>>> old-state
                                    <td>
                                         <%= category.dataValues.name %>
                                    </td>
                                    <td>
+<<<<<<< HEAD
                                         <a href="/admin/categories/<%= category.dataValues.categoryid %>"
                                              class="btn btn-sm btn-primary">Edit</a>
                                         <a href="/admin/category/delete/<%= category.dataValues.categoryid %>"
+=======
+                                        <a href="/admin/categories/<%= category.dataValues.id %>"
+                                             class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="/admin/category/delete/<%= category.dataValues.id %>"
+>>>>>>> old-state
                                              class="btn btn-sm btn-danger">Delete</a>
                                    </td>
                               </tr>
