@@ -3,16 +3,16 @@ const {
 } = require("sequelize");
 const sequelize = require("../data/db");
 
-const Blog = sequelize.define("blog", { //blog tablo adı
-     title: {
+const User = sequelize.define("user", {
+     fullname: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: false
      },
-     description: {
-          type: DataTypes.TEXT,
-          allowNull: true
+     email: {
+          type: DataTypes.STRING,
+          allowNull: false
      },
-     image: {
+     password: {
           type: DataTypes.STRING,
           allowNull: false
      }
@@ -20,4 +20,4 @@ const Blog = sequelize.define("blog", { //blog tablo adı
      timestamps: true
 });
 
-module.exports = Blog;
+module.exports = User;

@@ -23,7 +23,7 @@ const sequelize = new Sequelize(config.db.database, config.db.user, config.db.pa
 
 async function connect() {
      try {
-          await sequelize.authenticate();
+          await sequelize.authenticate(); //auhenticate bağlantıyı test etmek için kullanılır
           console.log("db connected :)");
      } catch (error) {
           console.log("db conn error", error);

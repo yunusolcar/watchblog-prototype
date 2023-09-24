@@ -2,10 +2,12 @@ const express = require("express");
 const path = require("path");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
+const authRoutes = require("./routes/auth");
 const sequelize = require("./data/db");
 const dummyData = require("./data/dummy-data");
 const Category = require("./models/category");
 const Blog = require("./models/blog");
+const User = require("./models/user");
 const app = express();
 
 //Template Engine
@@ -22,6 +24,7 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 
 //Routes
 app.use("/admin", adminRoutes);
+app.use("/account", authRoutes);
 app.use(userRoutes);
 
 //Many to Many
@@ -31,6 +34,9 @@ Blog.belongsToMany(Category, {
 Category.belongsToMany(Blog, {
     through: "blogCategories"
 });
+
+Blog.belongsTo(User); //belongsTo ile foreign key blog'a eklenir. hasOne kullanılmaz çünkü foreign key user tablosunda saklanır. Bir blogun sadece 1 user'ı olur
+User.hasMany(Blog); // Bir user birden fazla bloga sahip olabilir;
 
 // IIFE
 (async () => {

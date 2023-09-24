@@ -6,7 +6,7 @@ async function populate() {
 
      if (count == 0) {
 
-          const categories = await Category.bulkCreate([{
+          const categories = await Category.bulkCreate([{ //bulkCreate ile birden fazla sorguyu tek bir query'de gönderiyoruz
                     name: "Mechanical Watches"
                },
                {
