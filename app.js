@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-const express = require("express")
-const path = require("path")
-const sequelize = require("./models/db")
-const dummyData = require("./models/dummy-data")
-const userRoutes = require("./routes/user")
-const adminRoutes = require("./routes/admin")
-
-const app = express()
-=======
 const express = require("express");
 const path = require("path");
 const userRoutes = require("./routes/user");
@@ -19,7 +9,6 @@ const Category = require("./models/category");
 const Blog = require("./models/blog");
 const User = require("./models/user");
 const app = express();
->>>>>>> old-state
 
 //Template Engine
 app.set("view engine", "ejs")
@@ -33,35 +22,10 @@ app.use(express.urlencoded({
 app.use("/libs", express.static(path.join(__dirname, "node_modules")))
 app.use("/static", express.static(path.join(__dirname, "public")))
 
-//Relations - one to many
-const Category = require("./models/category")
-const Blog = require("./models/blog")
-
-Category.hasMany(Blog, {
-    foreignKey: {
-        name: 'categoryId',
-        allowNull: true
-    }
-}) 
-Blog.belongsTo(Category)
-
-async function clearDb() {
-    await sequelize.sync({
-        force: true
-    })
-    await dummyData()
-}
-clearDb()
-
 //Routes
-<<<<<<< HEAD
-app.use("/admin", adminRoutes)
-app.use(userRoutes)
-=======
 app.use("/admin", adminRoutes);
 app.use("/account", authRoutes);
 app.use(userRoutes);
->>>>>>> old-state
 
 //Many to Many
 Blog.belongsToMany(Category, {
