@@ -14,7 +14,7 @@
             <div class="col-md-12 mt-3">
                 <% if (action != "undefined" && action =="edit") { %>
                 <!--Action varsa (yani undefined değilse ve edit ise aşağıdaki kodu çalıştırır)-->
-                <div class="alert alert-success">The blog with ID <%= blogid %> has been updated</div>
+                <div class="alert alert-success">ID <%= blogid %> has been updated</div>
                 <% } %>
                 <% if (action != "undefined" && action =="create") { %>
                 <div class="alert alert-success">Blog Created</div>
@@ -36,7 +36,10 @@
                         <% blogs.forEach(blog => { %>
                         <tr>
                             <td><%= blog.dataValues.id %></td>
+<<<<<<< HEAD
                             <!--sequelize kullandığımızdan dataValues objesinin altında blogid bilgisine ulaşırız -->
+=======
+>>>>>>> main
                             <td>
                                 <img src="/static/images/<%= blog.dataValues.image %>" class="img-fluid" alt="">
                             </td>
@@ -46,6 +49,14 @@
                                 <% }) %></td>
                             <!--eager loading-->
                             <td>
+<<<<<<< HEAD
+=======
+                                <% blog.categories.forEach(category => { %>
+                                <p> <%= category.name %> </p>
+                                <% }) %>
+                            </td>
+                            <td>
+>>>>>>> main
                                 <a href="/admin/blogs/<%= blog.dataValues.id %>" class="btn btn-sm btn-primary">Edit</a>
                                 <a href="/admin/blog/delete/<%= blog.dataValues.id %>"
                                     class="btn btn-sm btn-danger">Delete</a>

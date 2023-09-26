@@ -36,12 +36,16 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="category" class="col-sm-2 col-form-label">Category</label>
+                        <label for="kategori" class="col-sm-2 col-form-label">Category</label>
                         <div class="col-sm-8">
-                            <select name="category" id="category" class="form-select">
+                            <select name="kategori" id="kategori" class="form-select">
                                 <option value="-1" selected>Choose</option>
                                 <% categories.forEach(category => { %>
+<<<<<<< HEAD
                                 <option value="<%= category.dataValues.id%>"><%= category.dataValues.name%></option>
+=======
+                                <option value="<%= category.dataValues.id %>"><%= category.dataValues.name %></option>
+>>>>>>> main
                                 <% }) %>
                             </select>
                         </div>

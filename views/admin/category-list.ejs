@@ -14,7 +14,7 @@
                <div class="col-md-12 mt-3">
                     <% if (action != "undefined" && action =="edit") { %>
                     <!--Action varsa (yani undefined değilse ve edit ise aşağıdaki kodu çalıştırır)-->
-                    <div class="alert alert-success">The category with ID <%= categoryid %> has been updated</div>
+                    <div class="alert alert-success">ID <%= categoryid %> has been updated</div>
                     <% } %>
                     <% if (action != "undefined" && action =="create") { %>
                     <div class="alert alert-success">Category Created</div>
@@ -34,7 +34,10 @@
                               <% categories.forEach(category => { %>
                               <tr>
                                    <td><%= category.dataValues.id %></td>
+<<<<<<< HEAD
                                    <!--sequelize kullandığımızdan dataValues objesinin altında name bilgisine ulaşırız -->
+=======
+>>>>>>> main
                                    <td>
                                         <%= category.dataValues.name %>
                                    </td>

@@ -3,7 +3,7 @@ const config = {
           host: "localhost",
           user: "root",
           password: "1234",
-          database: "watchappdb"
+          database: "watchdb"
      }
 }
-module.exports = config
+module.exports = config;
