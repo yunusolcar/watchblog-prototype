@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const path = require("path");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
@@ -19,6 +20,14 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+app.use(session({
+    secret: "hello there",
+    resave: false, // session üzerinde tekrar değişiklik yapılamamasını sağlar
+    saveUninitialized: false, //her uygulamayı ziyaret eden için bir session deposu oluşturmaz
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 // 1 günlük ömrü olan session oluşur
+    }
+}));
 //app.use(express.static("public"));
 
 app.use("/libs", express.static(path.join(__dirname, "node_modules")))
