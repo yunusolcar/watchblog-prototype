@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
@@ -16,7 +17,8 @@ app.set("view engine", "ejs")
 //Middlewares
 app.use(express.urlencoded({
     extended: false
-}))
+}));
+app.use(cookieParser());
 //app.use(express.static("public"));
 
 app.use("/libs", express.static(path.join(__dirname, "node_modules")))

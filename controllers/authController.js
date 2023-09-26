@@ -39,6 +39,16 @@ exports.getLogin = async (req, res) => {
           console.log(err);
      }
 }
+
+exports.getLogout = async (req, res) => {
+     try {
+          res.clearCookie("isAuth"); //logout yapıldığında cookie silinir
+          return res.redirect("/account/login");
+     } catch (err) {
+          console.log(err);
+     }
+}
+
 exports.postLogin = async (req, res) => {
      const email = req.body.email;
      const password = req.body.password;
@@ -58,7 +68,9 @@ exports.postLogin = async (req, res) => {
           }
 
           const match = await bcrypt.compare(password, user.password);
+
           if (match) {
+               res.cookie("isAuth", 1); // 1 başarılı bir giriş olduğunu ifade eder
                return res.redirect("/");
           }
 

@@ -85,7 +85,8 @@ exports.getIndexPage = async (req, res) => {
                title: "Popüler Saatler", //statik veri
                blogs: blogs,
                categories: categories,
-               selectedCategory: null
+               selectedCategory: null,
+               isAuth: req.cookies.isAuth
           });
      } catch (err) {
           console.log(err);
