@@ -44,8 +44,7 @@ exports.getBlogDetails = async (req, res) => { // /blogs/? soru işareti yerine 
           if (blog) {
                return res.render("users/blog-details", { // ilgili id si olan obje database de varsa  return dönüp aşağıdaki işlemleri yapar yok ise anasayfaya redirect eder
                     title: blog.title, //diinamik veri
-                    blog: blog,
-                    isAuth: req.session.isAuth
+                    blog: blog
                })
           }
           res.redirect('/');
@@ -67,8 +66,7 @@ exports.getBlogList = async (req, res) => {
                title: "Tüm Saatler",
                blogs: blogs,
                categories: categories,
-               selectedCategory: null,
-               isAuth: req.session.isAuth
+               selectedCategory: null
           });
      } catch (err) {
           console.log(err);
@@ -87,8 +85,7 @@ exports.getIndexPage = async (req, res) => {
                title: "Popüler Saatler", //statik veri
                blogs: blogs,
                categories: categories,
-               selectedCategory: null,
-               isAuth: req.session.isAuth
+               selectedCategory: null
           });
      } catch (err) {
           console.log(err);

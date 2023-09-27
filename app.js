@@ -11,6 +11,7 @@ const dummyData = require("./data/dummy-data");
 const Category = require("./models/category");
 const Blog = require("./models/blog");
 const User = require("./models/user");
+const locals = require("./middlewares/locals");
 const app = express();
 
 //Template Engine
@@ -32,6 +33,7 @@ app.use(session({
         db: sequelize
     })
 }));
+app.use(locals);
 //app.use(express.static("public"));
 
 app.use("/libs", express.static(path.join(__dirname, "node_modules")))
