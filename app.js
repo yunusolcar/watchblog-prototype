@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const path = require("path");
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
@@ -26,7 +27,10 @@ app.use(session({
     saveUninitialized: false, //her uygulamayı ziyaret eden için bir session deposu oluşturmaz
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 // 1 günlük ömrü olan session oluşur
-    }
+    },
+    store: new SequelizeStore({ //burada sessionları db de saklama işlemi yapıyoruz
+        db: sequelize
+    })
 }));
 //app.use(express.static("public"));
 
@@ -51,10 +55,10 @@ User.hasMany(Blog); // Bir user birden fazla bloga sahip olabilir;
 
 // IIFE
 (async () => {
-    await sequelize.sync({
-        force: true
-    });
-    await dummyData();
+    // await sequelize.sync({
+    //     force: true
+    // });
+    // await dummyData();
 })();
 
 

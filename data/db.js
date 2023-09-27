@@ -18,7 +18,8 @@ const sequelize = new Sequelize(config.db.database, config.db.user, config.db.pa
      dialect: 'mysql',
      define: {
           timestamps: false
-     }
+     },
+     storage: "./session.mysql"
 });
 
 async function connect() {

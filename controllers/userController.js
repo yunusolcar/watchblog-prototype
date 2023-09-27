@@ -44,7 +44,8 @@ exports.getBlogDetails = async (req, res) => { // /blogs/? soru işareti yerine 
           if (blog) {
                return res.render("users/blog-details", { // ilgili id si olan obje database de varsa  return dönüp aşağıdaki işlemleri yapar yok ise anasayfaya redirect eder
                     title: blog.title, //diinamik veri
-                    blog: blog
+                    blog: blog,
+                    isAuth: req.session.isAuth
                })
           }
           res.redirect('/');
@@ -66,7 +67,8 @@ exports.getBlogList = async (req, res) => {
                title: "Tüm Saatler",
                blogs: blogs,
                categories: categories,
-               selectedCategory: null
+               selectedCategory: null,
+               isAuth: req.session.isAuth
           });
      } catch (err) {
           console.log(err);
