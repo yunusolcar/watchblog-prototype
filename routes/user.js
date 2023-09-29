@@ -4,10 +4,10 @@ const userController = require("../controllers/userController");
 const router = express.Router();
 
 //Blogs by Category id
-router.use("/blogs/category/:categoryid", userController.getBlogsByCatId);
+router.use("/blogs/category/:slug", userController.getBlogsByCatId);
 
 //Blog details
-router.use("/blogs/:blogid", userController.getBlogDetails);
+router.use("/blogs/:slug", userController.getBlogDetails);
 
 //Blogs
 router.use("/blogs", userController.getBlogList);

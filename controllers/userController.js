@@ -5,13 +5,13 @@ const {
 } = require("sequelize");
 
 exports.getBlogsByCatId = async (req, res) => {
-     const id = req.params.categoryid;
+     const slug = req.params.slug;
      try {
           const blogs = await Blog.findAll({
                include: {
                     model: Category,
                     where: {
-                         id: id
+                         url: slug
                     }
                },
                raw: true
@@ -23,7 +23,7 @@ exports.getBlogsByCatId = async (req, res) => {
                title: "Tüm Saatler", //statik veri
                blogs: blogs, //dinamik veri
                categories: categories,
-               selectedCategory: id
+               selectedCategory: slug
           });
 
      } catch (error) {
@@ -32,12 +32,12 @@ exports.getBlogsByCatId = async (req, res) => {
 }
 
 exports.getBlogDetails = async (req, res) => { // /blogs/? soru işareti yerine sayı geldiğinde (yani blogid (blogid yerine başka şey de yazabiliriz)) bunu alttaki params içerisinden alabiliriz
-     const id = req.params.blogid;
+     const slug = req.params.slug;
      //console.log("id = " + id) // Burada url e yazılan id bilgisi konsola yazıldı. buraya girilen id deki veriler alınır. bütün kayıtlar alınmaz
      try {
           const blog = await Blog.findOne({
                where: {
-                    id: id
+                    url: slug
                },
                raw: true
           });

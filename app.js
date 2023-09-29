@@ -57,10 +57,10 @@ User.hasMany(Blog); // Bir user birden fazla bloga sahip olabilir;
 
 // IIFE
 (async () => {
-    // await sequelize.sync({
-    //     force: true
-    // });
-    // await dummyData();
+    await sequelize.sync({
+        force: true
+    });
+    await dummyData();
 })();
 
 

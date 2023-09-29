@@ -38,12 +38,12 @@
                               <th style="width: 50px;">ID</th>
                               <th style="width: 150px;">Image</th>
                               <th>Title</th>
-                              <th style="width: 150px;"></th>
+                              <th style="width: 250px;"></th>
                          </tr>
                     </thead>
                     <tbody>
-                         <% blogs.forEach(blog => { %>
                          <tr>
+                         <% blogs.forEach(blog => { %>
                               <td><%= blog.dataValues.id %></td>
                               <td>
                                    <img src="/static/images/<%= blog.dataValues.image %>" class="img-fluid" alt="">
@@ -52,8 +52,14 @@
                               <td>
                                    <a href="/admin/blogs/<%= blog.dataValues.id %>"
                                         class="btn btn-sm btn-primary">Edit</a>
-                                   <a href="/admin/blog/delete/<%= blog.dataValues.id %>"
-                                        class="btn btn-sm btn-danger">Delete</a>
+
+                                   <form style="display: inline-block;" action="/admin/categories/remove" method="post">
+                                        <input type="hidden" name="blogid" value="<%= blog.id %>">
+                                        <input type="hidden" name="categoryid" value="<%= category.id %>">
+                                        <button class="btn btn-sm btn-danger" type="submit">Remove from Category
+                                        </button>
+                                   </form>
+
                               </td>
                          </tr>
                          <% }) %>

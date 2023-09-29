@@ -34,6 +34,9 @@ router.get("/blogs/:blogid", isAuth, adminController.getBlogEdit);
 //Edit Blog - post
 router.post("/blogs/:blogid", isAuth, imageUpload.upload.single("image"), adminController.postBlogEdit);
 
+//Remove Category -get
+router.post("/categories/remove", isAuth, adminController.getCategoryRemove);
+
 //Edit Category - get
 router.get("/categories/:categoryid", isAuth, adminController.getCategoryEdit);
 
